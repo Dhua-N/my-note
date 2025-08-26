@@ -1,5 +1,18 @@
 {
-  // https://nuxt.com/docs/guide/concepts/typescript
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"],
+      "~/*": ["./*"]
+    },
+    "jsx": "preserve",
+    "types": ["node"]
+  },
+  "exclude": ["node_modules"],
   "files": [],
   "references": [
     {

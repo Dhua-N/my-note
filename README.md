@@ -1,75 +1,59 @@
-# Nuxt Minimal Starter
+# 个人云笔记 (Nuxt 3)
+> 「独立负责的前端线上项目，目标日均 PV 500+，Lighthouse 90 分。」
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+---
 
-## Setup
+### 🎯 项目选题（避坑 + 亮点）
+| 选题              | 技术亮点                                  | 数据亮点                    |
+| ----------------- | ----------------------------------------- | --------------------------- |
+| 「个人云笔记」    | Next.js + Markdown + PWA + IndexedDB 离线 | Lighthouse 4×90，可离线     |
+| 「Bing 壁纸日历」 | React + 服务端渲染 + 定时部署 + 缓存      | 每日自动更新，GitHub Action |
+| 「单词卡片」      | Vue3 + Vite + 富文本 + 背词算法           | 可分享卡片，支持暗黑模式    |
 
-Make sure to install dependencies:
+选一个即可，下面以「个人云笔记」为例。
 
-```bash
-# npm
-npm install
+---
 
-# pnpm
-pnpm install
+### 🚀 14 天计划日历
 
-# yarn
-yarn install
+| 天  | 任务                                 | 产出物                                  | 备注                 |
+| --- | ------------------------------------ | --------------------------------------- | -------------------- |
+| 1   | GitHub 建 Repo + Vercel 一键部署     | 可访问的 `https://note-demo.vercel.app` | 先跑通               |
+| 2-3 | 页面骨架：列表 + 详情 + 新建         | 3 个路由 + Tailwind 样式                | ui简洁、高级           |
+| 4-5 | 本地存储：IndexedDB（Dexie）         | 离线增删改查                            | 比 localStorage 高级 |
+| 6-7 | 富文本：react-markdown-editor-lite   | 支持粗体、列表、代码块                  | 记住配置高亮         |
+| 8   | PWA：workbox 自动生成 Service Worker | 离线打开、手机安装                      | Lighthouse 加分      |
+| 9   | SEO + SSR：Next.js `getStaticProps`  | 首屏 1.2 s                              | 用 ISR 每日更新      |
+| 10  | GitHub Action：每日 CI + 产物指纹    | 自动部署 + 缓存                         | 写进简历「CI/CD」    |
+| 11  | 埋点：Vercel Analytics               | 访问曲线图                              | 数据说话             |
+| 12  | 性能：图片压缩 + 字体分包            | Lighthouse 90+                          | 可截图放简历         |
+| 13  | README：动图录屏 + 技术栈徽章        | 5 分钟读完                              | 面试官最爱           |
+| 14  | 上线通知：朋友圈 + 掘金 + 牛客       | 拿真实 PV                               | 500+ 很容易          |
 
-# bun
-bun install
-```
+---
 
-## Development Server
+### 📦 技术栈（面试口头禅）
+- **框架**：Next.js 14（App Router）  
+- **语言**：TypeScript  
+- **样式**：Tailwind CSS + Dark Mode  
+- **存储**：IndexedDB（Dexie）  
+- **富文本**：react-markdown-editor-lite + Prism 代码高亮  
+- **部署**：Vercel + GitHub Action  
+- **性能**：Lighthouse 4×90、PWA、字体分包、图片 WebP
 
-Start the development server on `http://localhost:3000`:
+---
 
-```bash
-# npm
-npm run dev
+### 🎯 简历片段
 
-# pnpm
-pnpm dev
+> **个人云笔记**  
+> - 技术：Next.js 14 + TypeScript + Tailwind + IndexedDB + PWA  
+> - 功能：富文本、离线存储、暗黑模式、SSR、自动部署  
+> - 性能：Lighthouse 90+，首屏 1.2 s，PWA 可安装  
+> - 数据：上线 2 周 PV 800+，GitHub Star 42
 
-# yarn
-yarn dev
+---
 
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+### 执行进度
+✅ Day1：Nuxt 3 骨架已部署  
+🔗 Demo：[https://my-note-plum.vercel.app ](https://my-note-plum.vercel.app/) 
+📅 计划：D2 接入富文本编辑器，D3 添加 IndexedDB …
