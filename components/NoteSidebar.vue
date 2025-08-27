@@ -33,7 +33,7 @@
           :class="[
             activeId === note.id
               ? 'bg-sky-100 dark:bg-sky-900/60 text-sky-700 dark:text-sky-300 shadow-sm'
-              : 'hover:bg-slate-100/80 dark:hover:bg-slate-700/60',
+              : 'hover:bg-slate-100/80 dark:hover:bg-slate-700/60 dark:text-slate-400',
             'block w-full text-left pr-16 pl-4 py-3 rounded-xl text-sm truncate transition-colors duration-200'
           ]"
         >

@@ -4,6 +4,7 @@
     class="h-screen flex bg-gradient-to-br from-slate-50 to-slate-100
            dark:from-slate-900 dark:to-slate-800 p-4 gap-4"
   >
+    <ThemeToggle />
     <ToastList />
     <!-- 左侧列表 -->
     <NoteSidebar
@@ -40,6 +41,7 @@ import { nanoid } from 'nanoid'
 import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router'
 import { db, type Note } from '@/db'
 import { useDebounceFn } from '@vueuse/core'
+import ThemeToggle from '@/components/ThemeToggle.vue'
 
 const notes = ref<Note[]>([])
 const current = ref<Note | null>(null)

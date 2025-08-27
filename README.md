@@ -54,6 +54,30 @@
 ---
 
 ### 执行进度
-✅ Day1：Nuxt 3 骨架已部署  
+✅ Day1：
+1.基础功能：
+✅笔记的创建、编辑
+✅笔记置顶、删除功能
+✅自动保存功能
+✅Toast 消息提示
+✅删除确认对话框
+
+2.UI 界面：
+✅现代简约的设计风格
+✅优雅的动画效果
+✅清晰的视觉层次
+
+3.技术栈：
+✅Nuxt 3
+✅Vue 3 Composition API
+✅TypeScript
+✅Tailwind CSS
+✅Dexie.js (IndexedDB)
+
 🔗 Demo：[https://my-note-plum.vercel.app ](https://my-note-plum.vercel.app/) 
-📅 计划：D2 接入富文本编辑器，D3 添加 IndexedDB …
+
+📅 计划：D2 接入富文本编辑器
+
+2.UI界面
+✅响应式布局
+✅深色模式支持
