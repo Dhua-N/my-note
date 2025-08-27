@@ -1,10 +1,9 @@
 <!-- pages/index.vue -->
 <template>
   <main
-    class="h-screen flex bg-gradient-to-br from-slate-50 to-slate-100
+    class="h-screen flex bg-gradient-to-br z-[9999] from-slate-50 to-slate-100
            dark:from-slate-900 dark:to-slate-800 p-4 gap-4"
   >
-    <ThemeToggle />
     <ToastList />
     <!-- 左侧列表 -->
     <NoteSidebar
@@ -21,8 +20,6 @@
       <NoteSkeleton v-if="loading" />
       <NoteDetail
         v-else-if="current"
-        v-model:title="current.title"
-        v-model:body="current.body"
       />
       <div
         v-else
@@ -31,23 +28,32 @@
         选择或新建一条笔记
       </div>
     </div>
+    <ThemeToggle />
   </main>
 </template>
 
 <script setup lang="ts">
 definePageMeta({ ssr: false })
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, provide } from 'vue'
 import { nanoid } from 'nanoid'
 import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router'
 import { db, type Note } from '@/db'
 import { useDebounceFn } from '@vueuse/core'
-import ThemeToggle from '@/components/ThemeToggle.vue'
 
 const notes = ref<Note[]>([])
 const current = ref<Note | null>(null)
 const loading = ref(false)
 const route = useRoute()
 const router = useRouter()
+
+provide('currentTitle', computed(() => current.value?.title))
+provide('currentBody', computed(() => current.value?.body))
+provide('updateCurrentTitle', (v: string) => {
+  if (current.value) current.value.title = v
+})
+provide('updateCurrentBody',  (v: string) => {
+  if (current.value) current.value.body = v
+})
 
 /* ---------- 删除/置顶 ---------- */
 const deleteNote = async (noteId: string) => {

@@ -1,19 +1,6 @@
 # 个人云笔记 (Nuxt 3)
 > 「独立负责的前端线上项目，目标日均 PV 500+，Lighthouse 90 分。」
 
----
-
-### 🎯 项目选题（避坑 + 亮点）
-| 选题              | 技术亮点                                  | 数据亮点                    |
-| ----------------- | ----------------------------------------- | --------------------------- |
-| 「个人云笔记」    | Next.js + Markdown + PWA + IndexedDB 离线 | Lighthouse 4×90，可离线     |
-| 「Bing 壁纸日历」 | React + 服务端渲染 + 定时部署 + 缓存      | 每日自动更新，GitHub Action |
-| 「单词卡片」      | Vue3 + Vite + 富文本 + 背词算法           | 可分享卡片，支持暗黑模式    |
-
-选一个即可，下面以「个人云笔记」为例。
-
----
-
 ### 🚀 14 天计划日历
 
 | 天  | 任务                                 | 产出物                                  | 备注                 |
@@ -21,7 +8,7 @@
 | 1   | GitHub 建 Repo + Vercel 一键部署     | 可访问的 `https://note-demo.vercel.app` | 先跑通               |
 | 2-3 | 页面骨架：列表 + 详情 + 新建         | 3 个路由 + Tailwind 样式                | ui简洁、高级           |
 | 4-5 | 本地存储：IndexedDB（Dexie）         | 离线增删改查                            | 比 localStorage 高级 |
-| 6-7 | 富文本：react-markdown-editor-lite   | 支持粗体、列表、代码块                  | 记住配置高亮         |
+| 6-7 | 富文本：TipTap 2                    | 支持粗体、列表、代码块                  | 记住配置高亮         |
 | 8   | PWA：workbox 自动生成 Service Worker | 离线打开、手机安装                      | Lighthouse 加分      |
 | 9   | SEO + SSR：Next.js `getStaticProps`  | 首屏 1.2 s                              | 用 ISR 每日更新      |
 | 10  | GitHub Action：每日 CI + 产物指纹    | 自动部署 + 缓存                         | 写进简历「CI/CD」    |
@@ -33,9 +20,9 @@
 ---
 
 ### 📦 技术栈（面试口头禅）
-- **框架**：Next.js 14（App Router）  
+- **框架**：Nuxt.js 3
 - **语言**：TypeScript  
-- **样式**：Tailwind CSS + Dark Mode  
+- **样式**：Tailwind CSS + color-mode
 - **存储**：IndexedDB（Dexie）  
 - **富文本**：react-markdown-editor-lite + Prism 代码高亮  
 - **部署**：Vercel + GitHub Action  
@@ -54,20 +41,20 @@
 ---
 
 ### 执行进度
-✅ Day1：
-1.基础功能：
+📅 Day1
+1.基础功能:
 ✅笔记的创建、编辑
 ✅笔记置顶、删除功能
 ✅自动保存功能
 ✅Toast 消息提示
 ✅删除确认对话框
 
-2.UI 界面：
+2.UI界面:
 ✅现代简约的设计风格
 ✅优雅的动画效果
 ✅清晰的视觉层次
 
-3.技术栈：
+3.技术栈:
 ✅Nuxt 3
 ✅Vue 3 Composition API
 ✅TypeScript
@@ -78,6 +65,21 @@
 
 📅 计划：D2 接入富文本编辑器
 
-2.UI界面
+---
+
+📅 Day2
+1.基础功能:
+✅笔记支持富文本
+✅富文本编辑支持Markdown快捷方式，具体可查看帮助说明
+
+2.UI界面:
 ✅响应式布局
 ✅深色模式支持
+✅侧边栏添加帮助说明
+
+3.技术栈:
+✅tiptap 2
+✅Extension + InputRule
+✅ImageResize
+
+📅 计划：D3 实现PWA
