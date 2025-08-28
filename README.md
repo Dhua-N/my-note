@@ -83,3 +83,16 @@
 ✅ImageResize
 
 📅 计划：D3 实现PWA
+
+---
+
+📅 Day3
+1.基础功能:
+✅实现PWA
+✅富文本编辑支持Markdown快捷方式，具体可查看帮助说明
+
+2.UI界面:
+✅实现响应式布局
+
+3.技术栈:
+✅vite-pwa/nuxt
