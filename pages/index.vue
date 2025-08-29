@@ -70,6 +70,9 @@ const deleteNote = async (noteId: string) => {
 
 const togglePin = async (noteId: string, isPinned: boolean) => {
   try {
+    if(noteId == current.value?.id) {
+      current.value.pinned = isPinned ? Date.now() : undefined
+    }
     const note = await db.notes.get(noteId)
     if (note) {
       await db.notes.put({
@@ -125,7 +128,7 @@ const createNote = async () => {
     await db.notes.add({
       id,
       title: '',
-      body: '',
+      body: '{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[]}]}',
       createdAt: Date.now(),
       updatedAt: Date.now()
     })

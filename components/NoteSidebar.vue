@@ -28,6 +28,12 @@
     <!-- 列表：点击直接 emit id，父组件改 query -->
     <ul class="flex-1 overflow-y-auto px-3 pb-3 space-y-1.5">
       <li v-for="note in notes" :key="note.id" class="group relative">
+        <span 
+            v-if="note.pinned" 
+            class="absolute left-0 top-1/2 -translate-y-1/2 text-sky-500/75"
+          >
+            📌
+        </span>
         <button
           @click="$emit('select', note.id)"
           :class="[
@@ -38,12 +44,6 @@
           ]"
         >
           {{ note.title || '无标题' }}
-          <span 
-            v-if="note.pinned" 
-            class="absolute right-16 top-1/2 -translate-y-1/2 text-sky-500/75"
-          >
-            📌
-          </span>
         </button>
         <!-- 操作按钮 -->
         <div 

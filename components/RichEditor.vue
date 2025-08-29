@@ -30,10 +30,15 @@
     </aside>
 
     <!-- 主编辑区 -->
-    <main class="flex-1 overflow-y-auto">
+    <main class="flex flex-col flex-1">
     <!-- 工具栏 -->
         <div
-            class="flex flex-wrap items-center gap-1.5 border-b border-gray-200/80 dark:border-gray-700/60 bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm px-4 py-2 text-sm sticky top-0 z-20"
+            class="flex flex-wrap items-center gap-1.5
+                    border-b border-gray-200/80 dark:border-gray-700/60
+                    bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm
+                    px-4 py-2 text-sm
+                    h-12 shrink-0
+                    text-gray-900 dark:text-gray-100"
         >
             <!-- 标题 H1-H3 -->
             <template v-for="lvl in [1,2,3] as const" :key="lvl">
@@ -246,16 +251,22 @@
             </div>
         </div>
 
+        <!-- 间距（不会参与 flex 伸缩） -->
+        <div class="h-2 shrink-0"></div>   <!-- 8px 空隙 -->
+
         <!-- 编辑器 -->
-      <editor-content
-        :editor="editor"
-        class="prose prose-gray dark:prose-invert
-               prose-sm
-               max-w-4xl
-               mx-auto
-               px-0 py-5
-               selection:bg-blue-100 dark:selection:bg-blue-900/50"
-      />
+        <div class="flex-1 overflow-y-auto">
+            <editor-content
+                :editor="editor"
+                class="focus:outline-none
+                    prose prose-gray dark:prose-invert prose-sm
+                    max-w-4xl mx-auto
+                    selection:bg-blue-100 dark:selection:bg-blue-900/50"
+            />
+        </div>
+
+        <!-- 间距（不会参与 flex 伸缩） -->
+        <div class="h-2 shrink-0"></div>   <!-- 8px 空隙 -->
     </main>
   </div>
 </template>
@@ -264,6 +275,7 @@
 import { ref, watch, nextTick } from 'vue'
 import { Editor, EditorContent } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
+import Heading from '@tiptap/extension-heading'
 import Highlight from '@tiptap/extension-highlight'
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import TaskList from '@tiptap/extension-task-list'
@@ -277,26 +289,49 @@ import { createLowlight, common } from 'lowlight'
 import { Extension, InputRule, findParentNode } from '@tiptap/core'
 import Image from '@tiptap/extension-image'
 import ImageResize from 'tiptap-extension-resize-image'
+import { nanoid } from 'nanoid'
 
 // 读取父级数据
 const currentBody = inject<Ref<string>>('currentBody')!
 const updateCurrentBody = inject<(html: string) => void>('updateCurrentBody')!
 
-/* 🚀 1. 目录：收集 heading */
+/* 🚀 1. 目录：收集 heading，实现目录及快速定位 */
 const headings = ref<{ level: number; text: string; id: string }[]>([])
-function updateHeadings() {
+
+/* 自定义heading */
+const HeadingWithId = Heading.extend({
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+      id: { default: null, parseHTML: el => el.getAttribute('id'), renderHTML: a => a.id ? { id: a.id } : {} }
+    }
+  }
+})
+
+async function syncHeadingsAndIds() {
   if (!editor.value) return
-  headings.value = []
+
+  const tr = editor.value.state.tr
+  const temp: typeof headings.value = []
+
   editor.value.state.doc.descendants((node, pos) => {
     if (node.type.name === 'heading') {
-      const id = `h-${pos}` // 用 pos 保证唯一即可
-      headings.value.push({
-        level: node.attrs.level,
-        text: node.textContent,
-        id
-      })
+      const id = node.attrs.id || `h-${nanoid(6)}`
+      temp.push({ level: node.attrs.level, text: node.textContent, id })
+
+      if (!node.attrs.id) {
+        tr.setNodeMarkup(pos, undefined, { ...node.attrs, id })
+      }
     }
   })
+
+  /* 判断是否有改动 */
+  if (tr.docChanged) {
+    editor.value.view.dispatch(tr) // 写入id
+  }
+
+  /* 更新目录（无论是否改动都刷新） */
+  headings.value = temp
 }
 function scrollToHeading(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
@@ -357,8 +392,8 @@ const TaskInputRule = Extension.create({
       })
 
     return [
-      makeRule(/(-\[\]|(-\s\[\]))\s$/, false),   // -[]␣ 或 - [ ]␣
-      makeRule(/(-\[x\]|(-\s\[x\]))\s$/i, true)  // -[x]␣ 或 - [x]␣
+      makeRule(/(-\[\]|(-\s\[\]))\s$/, false),
+      makeRule(/(-\[x\]|(-\s\[x\]))\s$/i, true)
     ]
   }
 })
@@ -369,17 +404,18 @@ const editor = ref<Editor>()
 editor.value = new Editor({
   extensions: [
     StarterKit.configure({
-      heading: { levels: [1, 2, 3] },
+      heading: false,
       codeBlock: false,
       bulletList: { HTMLAttributes: { class: 'list-disc' } },
       orderedList: { HTMLAttributes: { class: 'list-decimal' } },
       link: false,
     }),
+    HeadingWithId.configure({ levels: [1, 2, 3] }), 
     Highlight,
     CodeBlockLowlight.configure({ lowlight }),
     TaskList,
     TaskItem.configure({ nested: true }),
-    TaskInputRule, // 👈 关键：让 - [ ] 回车生效
+    TaskInputRule,
     Table.configure({ resizable: true }),
     TableRow,
     TableHeader,
@@ -395,13 +431,14 @@ editor.value = new Editor({
         allowBase64: true,
     }), 
   ],
+  autofocus: true,
   content: currentBody.value ? JSON.parse(currentBody.value) : {},
   onUpdate: ({ editor }) => {
     updateCurrentBody(JSON.stringify(editor.getJSON()))
-    nextTick(updateHeadings)
+    nextTick(syncHeadingsAndIds)
   },
   onCreate: ({ editor }) => {
-    nextTick(updateHeadings)
+    nextTick(syncHeadingsAndIds)
   },
   editorProps: {
     handleDrop(view, event, slice, moved) {
@@ -438,15 +475,31 @@ watch(
     (val) => {
         if (!editor.value) return
         try {
-          const json = val ? JSON.parse(val) : {}
-          if (JSON.stringify(json) !== JSON.stringify(editor.value.getJSON())) {
-            editor.value.commands.setContent(json, { emitUpdate: false })
-            nextTick(updateHeadings)
-          }
+            const json = val ? JSON.parse(val) : {}
+            if (JSON.stringify(json) !== JSON.stringify(editor.value.getJSON())) {
+                editor.value.commands.setContent(json, { emitUpdate: false })
+                nextTick(syncHeadingsAndIds)
+            }
+            else 
+            emptyCheckFocus()
         } catch {}
   },
   { immediate: true }
 )
+
+function emptyCheckFocus() {
+    // 空文档（仅 1 个空段落）→ 自动聚焦
+    if (!editor.value) return
+    const doc = editor.value.state.doc
+    const isEmpty =
+      doc.childCount === 1 &&
+      doc.firstChild?.type.name === 'paragraph' &&
+      doc.firstChild.content.size === 0
+
+    if (isEmpty) {
+      editor.value.commands.focus('end')
+    }
+}
 </script>
 
 <style>
@@ -470,7 +523,6 @@ ul[data-type='taskList'] li > label {
   margin-right: 0.5rem;
 }
 
-/* 表格样式 */
 /* 表格整体边框 + 单元格边框 */
 .ProseMirror table {
   border-collapse: collapse;

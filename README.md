@@ -61,7 +61,9 @@
 ✅Tailwind CSS
 ✅Dexie.js (IndexedDB)
 
-🔗 Demo：[https://my-note-plum.vercel.app ](https://my-note-plum.vercel.app/) 
+🔗 Demo：
+国外地址：[https://my-note-plum.vercel.app]
+国内地址：[https://my-note-41i.pages.dev/]
 
 📅 计划：D2 接入富文本编辑器
 
@@ -75,7 +77,7 @@
 2.UI界面:
 ✅响应式布局
 ✅深色模式支持
-✅侧边栏添加帮助说明
+✅帮助说明
 
 3.技术栈:
 ✅tiptap 2
@@ -89,10 +91,13 @@
 📅 Day3
 1.基础功能:
 ✅实现PWA
-✅富文本编辑支持Markdown快捷方式，具体可查看帮助说明
+✅实现富文本快捷输入
+✅实现编辑区顶部工具栏
+✅目录快速定位
 
 2.UI界面:
-✅实现响应式布局
+✅优化操作使用界面
 
 3.技术栈:
 ✅vite-pwa/nuxt
+✅tiptap 2

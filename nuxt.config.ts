@@ -7,17 +7,17 @@ export default defineNuxtConfig({
     '@vite-pwa/nuxt',
   ],
   colorMode: {
-    preference: 'system', // 默认跟随系统
-    fallback: 'light',    // 系统关闭时兜底
-    classSuffix: ''       // 让 <html class="dark"> 而不是 class="dark-mode"
+    preference: 'system',
+    fallback: 'light',
+    classSuffix: ''
   }, 
   ssr: false,
   pwa: {
     registerType: 'autoUpdate',
-    devOptions: { enabled: true },        // 本地也能看
+    devOptions: { enabled: true },        // 本地也能看到 PWA 的效果
     workbox: {
       globPatterns: process.env.NODE_ENV === 'production'
-      ? ['**/*.{js,css,html,ico,woff2}']
+      ? ['**/*.{js,css,html,ico,woff2,png,svg,jpg,jpeg,webp}']
       : []
     },
     manifest: {
