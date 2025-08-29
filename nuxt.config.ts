@@ -16,6 +16,8 @@ export default defineNuxtConfig({
     registerType: 'autoUpdate',
     devOptions: { enabled: true },        // 本地也能看到 PWA 的效果
     workbox: {
+      skipWaiting: true,      // 立即激活新 SW
+      clientsClaim: true,     // 立即接管所有标签
       globPatterns: process.env.NODE_ENV === 'production'
       ? ['**/*.{js,css,html,ico,woff2,png,svg,jpg,jpeg,webp}']
       : []

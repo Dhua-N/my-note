@@ -435,10 +435,10 @@ editor.value = new Editor({
   content: currentBody.value ? JSON.parse(currentBody.value) : {},
   onUpdate: ({ editor }) => {
     // 手动把光标所在行滚到中间
-    const { view } = editor
-    const { from } = view.state.selection
-    const node = view.domAtPos(from).node as HTMLElement
-    node?.scrollIntoView?.({ block: 'center', behavior: 'smooth' })
+    // const { view } = editor
+    // const { from } = view.state.selection
+    // const node = view.domAtPos(from).node as HTMLElement
+    // node?.scrollIntoView?.({ block: 'center', behavior: 'smooth' })
 
     updateCurrentBody(JSON.stringify(editor.getJSON()))
     nextTick(syncHeadingsAndIds)
