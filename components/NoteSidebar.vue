@@ -71,7 +71,7 @@
     </ul>
 
     <!-- 帮助按钮 -->
-    <!-- <div class="p-4 mt-auto border-t border-slate-200/50 dark:border-slate-700/50">
+    <div class="p-4 mt-auto border-t border-slate-200/50 dark:border-slate-700/50">
       <button
         @click="showHelp = true"
         class="flex items-center justify-center gap-2 w-full
@@ -82,7 +82,7 @@
       >
         ❓ 帮助说明
       </button>
-    </div> -->
+    </div>
 
     <!-- 帮助弹窗 -->
     <Transition name="fade">
