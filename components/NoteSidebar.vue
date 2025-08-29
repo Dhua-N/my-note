@@ -108,7 +108,7 @@
               <li><code>`行内代码`</code>、<code>```js\n...\n```</code> 代码块（高亮）</li>
               <li><code>- 无序</code> / <code>1. 有序</code> / <code>- [ ] 任务</code></li>
               <li><code>> 引用</code>、<code>---</code> 水平线</li>
-              <li><code>| 表头 |</code> 支持表格（拖拽可调列宽）</li>
+              <li><code>| 表头 |</code></li>
               <li>粘贴/拖拽图片自动上传为 base64</li>
               <li>粘贴链接自动识别为超链接</li>
             </ul>
@@ -117,7 +117,6 @@
             <ul class="list-disc list-inside space-y-1 pl-2">
               <li>侧边栏置顶/删除按钮悬浮可见</li>
               <li>左侧目录可点击快速跳转标题</li>
-              <li>Ctrl/Cmd+S 保存（父组件已实现）</li>
             </ul>
           </div>
 
