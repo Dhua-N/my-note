@@ -364,6 +364,7 @@ function insertTable() {
 }
 
 /* 🚀 5. 自定义快捷输入 */
+/* 任务列表 */
 const TaskInputRule = Extension.create({
   name: 'taskInputRule',
   addInputRules() {
@@ -398,6 +399,41 @@ const TaskInputRule = Extension.create({
   }
 })
 
+/* tab缩进 */
+const TabIndent = Extension.create({
+  name: 'tabIndent',
+
+  addKeyboardShortcuts() {
+    const insertSpaces = (count = 4) =>
+      this.editor.commands.insertContent(' '.repeat(count))
+
+    const removeSpaces = (count = 4) => {
+      const { state, view } = this.editor
+      const { $from } = state.selection
+      const pos = $from.pos
+      const textBefore = state.doc.textBetween(Math.max(pos - count, 0), pos)
+      if (textBefore === ' '.repeat(count)) {
+        return this.editor.commands.deleteRange({
+          from: pos - count,
+          to: pos,
+        })
+      }
+      return false
+    }
+
+    return {
+      Tab: () => {
+        insertSpaces(4)
+        return true // 阻止浏览器默认
+      },
+      'Shift-Tab': () => {
+        removeSpaces(4)
+        return true
+      },
+    }
+  },
+})
+
 /* 🚀 6. 创建编辑器 */
 const editor = ref<Editor>()
 
@@ -430,6 +466,7 @@ editor.value = new Editor({
         inline: true,
         allowBase64: true,
     }), 
+    TabIndent, 
   ],
   autofocus: true,
   content: currentBody.value ? JSON.parse(currentBody.value) : {},
