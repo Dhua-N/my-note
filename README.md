@@ -9,7 +9,7 @@
 | 2-3 | 页面骨架：列表 + 详情 + 新建         | 3 个路由 + Tailwind 样式                | ui简洁、高级           |
 | 4-5 | 本地存储：IndexedDB（Dexie）         | 离线增删改查                            | 比 localStorage 高级 |
 | 6-7 | 富文本：TipTap 2                    | 支持粗体、列表、代码块                  | 记住配置高亮         |
-| 8   | PWA：workbox 自动生成 Service Worker | 离线打开、手机安装                      | Lighthouse 加分      |
+| 8   | PWA：workbox 自动生成 Service Worker | 离线打开、桌面安装                      | Lighthouse 加分      |
 | 9   | SEO + SSR：Next.js `getStaticProps`  | 首屏 1.2 s                              | 用 ISR 每日更新      |
 | 10  | GitHub Action：每日 CI + 产物指纹    | 自动部署 + 缓存                         | 写进简历「CI/CD」    |
 | 11  | 埋点：Vercel Analytics               | 访问曲线图                              | 数据说话             |

@@ -15,7 +15,11 @@ class MyDb extends Dexie {
   constructor() {
     super('my-note-db')
     this.version(1).stores({
-      notes: 'id, createdAt'   // 添加 createdAt 索引
+      notes: 'id, createdAt'
+    })
+    // 新增版本 2，只加索引，不删旧索引
+    this.version(2).stores({
+      notes: 'id, createdAt, updatedAt'
     })
   }
 }
