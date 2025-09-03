@@ -1,0 +1,35 @@
+/* 导入Google字体 */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Fira+Code:wght@300;400;500;600;700&display=swap');
+
+/* CSS变量定义 */
+:root {
+  --user-font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  --user-font-size: 16px;
+  --user-line-height: 1.6;
+}
+
+/* 应用自定义字体 */
+body {
+  font-family: var(--user-font-family);
+  font-size: var(--user-font-size);
+  line-height: var(--user-line-height);
+}
+
+/* 编辑器字体 */
+.prose,
+.markdown-editor,
+.note-content {
+  font-family: var(--user-font-family);
+  font-size: var(--user-font-size);
+  line-height: var(--user-line-height);
+}
+
+/* 等宽字体（代码块） */
+pre, code {
+  font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+}
+
+/* 中文字体优化 */
+:lang(zh) {
+  font-family: var(--user-font-family), 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}

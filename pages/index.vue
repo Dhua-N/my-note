@@ -29,14 +29,18 @@
         选择或新建一条笔记
       </div>
     </div>
-    <ThemeToggle />
+    <div class="absolute top-4 right-4 z-50">
+      <ThemeToggle />
+    </div>
+
+    <!-- 帮助菜单 -->
+    <HelpMenu />
   </main>
 </template>
 
 <script setup lang="ts">
-definePageMeta({ ssr: false })
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, onMounted, provide, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useNotesStore } from '~/stores/notes'
 
@@ -49,10 +53,10 @@ const loading = ref<boolean>(true)
 provide('currentTitle', computed(() => notes.value.find(n => n.id === editingId.value)?.title || ''))
 provide('currentBody', computed(() => notes.value.find(n => n.id === editingId.value)?.body || ''))
 provide('updateCurrentTitle', async (title: string) => {
-  if (editingId.value) await store.updateNote(editingId.value, { title })
+  if (editingId.value) await store.queueUpdate(editingId.value, { title })
 })
 provide('updateCurrentBody', async (body: string) => {
-  if (editingId.value) await store.updateNote(editingId.value, { body })
+  if (editingId.value) await store.queueUpdate(editingId.value, { body })
 })
 
 function changeNote(id: string) {

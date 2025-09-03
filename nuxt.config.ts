@@ -5,23 +5,66 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@nuxtjs/color-mode',
     '@vite-pwa/nuxt',
-    '@pinia/nuxt', 
+    '@pinia/nuxt',
   ],
   colorMode: {
     preference: 'system',
     fallback: 'light',
     classSuffix: ''
-  }, 
+  },
   ssr: false,
   pwa: {
     registerType: 'autoUpdate',
-    devOptions: { enabled: true },        // 本地也能看到 PWA 的效果
+    devOptions: {
+      enabled: false,       // 开发环境禁用PWA
+      type: 'module'       // 使用ES模块模式避免冲突
+    },
     workbox: {
-      skipWaiting: true,      // 立即激活新 SW
-      clientsClaim: true,     // 立即接管所有标签
+      skipWaiting: true,     // 生产环境立即激活
+      clientsClaim: true,    // 生产环境立即接管
       globPatterns: process.env.NODE_ENV === 'production'
-      ? ['**/*.{js,css,html,ico,woff2,png,svg,jpg,jpeg,webp}']
-      : []
+        ? ['**/*.{js,css,html,ico,woff2,png,svg,jpg,jpeg,webp}']
+        : [],
+      // 生产环境优化：精细缓存策略
+      runtimeCaching: process.env.NODE_ENV === 'production' ? [
+        // 1. Google字体（永久缓存）
+        {
+          urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
+          handler: 'CacheFirst',
+          options: {
+            cacheName: 'google-fonts',
+            expiration: {
+              maxEntries: 30,
+              maxAgeSeconds: 60 * 60 * 24 * 365 // 1年
+            }
+          }
+        },
+        // 2. 图标库（长期缓存）
+        {
+          urlPattern: /^https:\/\/cdn\.jsdelivr\.net\/.*/i,
+          handler: 'CacheFirst',
+          options: {
+            cacheName: 'cdn-assets',
+            expiration: {
+              maxEntries: 50,
+              maxAgeSeconds: 60 * 60 * 24 * 30 // 30天
+            }
+          }
+        },
+        // 3. 用户笔记数据（网络优先，离线兜底）
+        {
+          urlPattern: /\/api\/notes/i,
+          handler: 'NetworkFirst',
+          options: {
+            cacheName: 'api-notes',
+            networkTimeoutSeconds: 3,
+            expiration: {
+              maxEntries: 100,
+              maxAgeSeconds: 60 * 5 // 5分钟
+            }
+          }
+        }
+      ] : []
     },
     manifest: {
       name: 'My Notes PWA',
