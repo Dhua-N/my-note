@@ -25,6 +25,11 @@ export default defineNuxtConfig({
       globPatterns: process.env.NODE_ENV === 'production'
         ? ['**/*.{js,css,html,ico,woff2,png,svg,jpg,jpeg,webp}']
         : [],
+      additionalManifestEntries: [
+        { url: '/', revision: null }   // 显式把“/”塞到预缓存清单
+      ],
+      navigateFallback: '/',
+      navigateFallbackAllowlist: [/^\//],
       // 生产环境优化：精细缓存策略
       runtimeCaching: process.env.NODE_ENV === 'production' ? [
         // 1. Google字体（永久缓存）
