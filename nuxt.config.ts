@@ -16,23 +16,24 @@ export default defineNuxtConfig({
   pwa: {
     registerType: 'autoUpdate',
     devOptions: {
-      enabled: false,       // 开发环境禁用PWA
-      type: 'module'       // 使用ES模块模式避免冲突
+      enabled: false,
+      type: 'module'
     },
     workbox: {
-      skipWaiting: true,     // 生产环境立即激活
-      clientsClaim: true,    // 生产环境立即接管
+      // 修复：避免立即激活，允许用户控制更新
+      skipWaiting: false,
+      clientsClaim: false,
       globPatterns: process.env.NODE_ENV === 'production'
         ? ['**/*.{js,css,html,ico,woff2,png,svg,jpg,jpeg,webp}']
         : [],
       additionalManifestEntries: [
-        { url: '/', revision: null }   // 显式把“/”塞到预缓存清单
+        { url: '/', revision: Date.now().toString() } // 添加版本号避免缓存
       ],
       navigateFallback: '/',
       navigateFallbackAllowlist: [/^\//],
-      // 生产环境优化：精细缓存策略
+      // 修复：添加缓存清理策略
+      cleanupOutdatedCaches: true,
       runtimeCaching: process.env.NODE_ENV === 'production' ? [
-        // 1. Google字体（永久缓存）
         {
           urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
           handler: 'CacheFirst',
@@ -40,11 +41,10 @@ export default defineNuxtConfig({
             cacheName: 'google-fonts',
             expiration: {
               maxEntries: 30,
-              maxAgeSeconds: 60 * 60 * 24 * 365 // 1年
+              maxAgeSeconds: 60 * 60 * 24 * 365
             }
           }
         },
-        // 2. 图标库（长期缓存）
         {
           urlPattern: /^https:\/\/cdn\.jsdelivr\.net\/.*/i,
           handler: 'CacheFirst',
@@ -52,20 +52,7 @@ export default defineNuxtConfig({
             cacheName: 'cdn-assets',
             expiration: {
               maxEntries: 50,
-              maxAgeSeconds: 60 * 60 * 24 * 30 // 30天
-            }
-          }
-        },
-        // 3. 用户笔记数据（网络优先，离线兜底）
-        {
-          urlPattern: /\/api\/notes/i,
-          handler: 'NetworkFirst',
-          options: {
-            cacheName: 'api-notes',
-            networkTimeoutSeconds: 3,
-            expiration: {
-              maxEntries: 100,
-              maxAgeSeconds: 60 * 5 // 5分钟
+              maxAgeSeconds: 60 * 60 * 24 * 30
             }
           }
         }
@@ -88,7 +75,17 @@ export default defineNuxtConfig({
   app: {
     head: {
       link: [{ rel: 'manifest', href: '/manifest.webmanifest' }],
-      meta: [{ name: 'theme-color', content: '#3b82f6' }]
+      meta: [
+        { name: 'theme-color', content: '#3b82f6' },
+        // 修复：添加缓存控制
+        { name: 'cache-control', content: 'no-cache, no-store, must-revalidate' }
+      ]
+    }
+  },
+  // 修复：添加构建配置
+  nitro: {
+    prerender: {
+      routes: ['/']
     }
   }
 })
