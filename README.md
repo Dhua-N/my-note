@@ -62,8 +62,8 @@
 ✅Dexie.js (IndexedDB)
 
 🔗 Demo：
-国外地址：[https://my-note-plum.vercel.app]
 国内地址：[https://my-note-41i.pages.dev/]
+国外地址：[https://my-note-plum.vercel.app]
 
 📅 计划：D2 接入富文本编辑器
 

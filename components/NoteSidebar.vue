@@ -113,15 +113,11 @@
         </div>
       </li>
     </ul>
-
-    
   </aside>
 </template>
 
 <script setup lang="ts">
 import type { Note } from '@/db'
-import { useToast } from '@/composables/useToast'
-import FontSettingsModal from './FontSettingsModal.vue'
 
 const props = defineProps<{ notes: Note[]; activeId: string }>()
 const emit = defineEmits<{
@@ -130,8 +126,6 @@ const emit = defineEmits<{
   delete: [id: string]
   togglePin: [id: string, isPinned: boolean]
 }>()
-
-const { addToast } = useToast()
 
 /* ---------- 折叠状态 ---------- */
 const collapsed = ref(false)
@@ -142,10 +136,6 @@ const noteToDelete = ref<Note | null>(null)
 
 const handleTogglePin = (note: Note) => {
   emit('togglePin', note.id, !note.pinned)
-  addToast(
-    `"${note.title || '无标题'}" ${!note.pinned ? '已置顶' : '已取消置顶'}`,
-    'success'
-  )
 }
 
 const handleDelete = (note: Note) => {
@@ -156,15 +146,9 @@ const handleDelete = (note: Note) => {
 const confirmDelete = () => {
   if (noteToDelete.value) {
     emit('delete', noteToDelete.value.id)
-    addToast(`"${noteToDelete.value.title || '无标题'}" 已删除`, 'success')
     noteToDelete.value = null
   }
 }
-
-/* ---------- 帮助弹出状态 ---------- */
-const showHelp = ref(false)
-const showHelpMenu = ref(false)
-const showFontSettings = ref(false)
 </script>
 
 <style scoped>
